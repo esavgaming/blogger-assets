@@ -1,34 +1,4 @@
 /* ============================================================
-   VARIÁVEIS CONECTADAS AO PAINEL DO BLOGGER
-   ============================================================ */
-:root {
-    /* Fundos */
-    --bg-main: $(tema.fundo.geral);
-    --bg-header: $(tema.fundo.header);
-    --bg-nav-horiz: $(tema.fundo.nav.horizontal);
-    --bg-nav-lat: $(tema.fundo.nav.lateral);
-    --bg-content: $(tema.fundo.conteudo);
-    --bg-border: $(tema.fundo.borda);
-
-    /* Textos (Header e Nav) */
-    --fg-header-title: $(tema.texto.header.titulo);
-    --fg-header-desc: $(tema.texto.header.desc);
-    --fg-nav-horiz: $(tema.texto.nav.horizontal);
-    --fg-nav-lat: $(tema.texto.nav.lateral);
-
-    /* Textos (Conteúdo) */
-    --fg-content-title: $(tema.texto.conteudo.titulo);
-    --fg-content-body: $(tema.texto.conteudo.corpo);
-    --fg-content-muted: $(tema.texto.conteudo.secundario);
-
-    /* Destaques e Interações */
-    --accent: $(tema.destaque.principal);
-    --accent-contrast: $(tema.destaque.contraste);
-    --bg-nav-hover: $(tema.interacao.nav.hover);
-    --bg-notice: $(tema.interacao.aviso);
-}
-
-/* ============================================================
    RESET BÁSICO E TYPOGRAPHY
    ============================================================ */
 * {
