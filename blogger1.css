@@ -1,0 +1,539 @@
+/* ============================================================
+   VARIÁVEIS CONECTADAS AO PAINEL DO BLOGGER
+   ============================================================ */
+:root {
+    /* Fundos */
+    --bg-main: $(tema.fundo.geral);
+    --bg-header: $(tema.fundo.header);
+    --bg-nav-horiz: $(tema.fundo.nav.horizontal);
+    --bg-nav-lat: $(tema.fundo.nav.lateral);
+    --bg-content: $(tema.fundo.conteudo);
+    --bg-border: $(tema.fundo.borda);
+
+    /* Textos (Header e Nav) */
+    --fg-header-title: $(tema.texto.header.titulo);
+    --fg-header-desc: $(tema.texto.header.desc);
+    --fg-nav-horiz: $(tema.texto.nav.horizontal);
+    --fg-nav-lat: $(tema.texto.nav.lateral);
+
+    /* Textos (Conteúdo) */
+    --fg-content-title: $(tema.texto.conteudo.titulo);
+    --fg-content-body: $(tema.texto.conteudo.corpo);
+    --fg-content-muted: $(tema.texto.conteudo.secundario);
+
+    /* Destaques e Interações */
+    --accent: $(tema.destaque.principal);
+    --accent-contrast: $(tema.destaque.contraste);
+    --bg-nav-hover: $(tema.interacao.nav.hover);
+    --bg-notice: $(tema.interacao.aviso);
+}
+
+/* ============================================================
+   RESET BÁSICO E TYPOGRAPHY
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--fg-content-body);
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+}
+
+/* Fallback geral para links soltos no texto */
+a {
+    text-decoration: none;
+    color: var(--fg-content-muted);
+    transition: 0.25s ease;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+/* ============================================================
+   ESTRUTURA DE LAYOUT (SIDEBAR + CONTEÚDO)
+   ============================================================ */
+#layout-principal {
+    max-width: 1150px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    align-items: start;
+    gap: 3rem;
+}
+
+#conteudo {
+    width: 100%;
+    min-height: 60vh;
+}
+
+@media (max-width: 860px) {
+    #layout-principal {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    #menu-lateral {
+        margin-bottom: 0;
+    }
+}
+
+/* ============================================================
+   CABEÇALHO INSTITUCIONAL
+   ============================================================ */
+#topo-institucional {
+    background: var(--bg-header);
+    padding: 3rem 2rem 2rem 2rem;
+    border-bottom: 3px solid var(--accent);
+    text-align: center;
+}
+
+.header-texto h1, .header-texto h1 a {
+    font-family: 'Merriweather', serif;
+    font-size: 2rem;
+    color: var(--fg-header-title);
+    letter-spacing: 1px;
+    text-align: center;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.header-texto h1 a:hover {
+    color: var(--accent);
+}
+
+.header-texto .description {
+    color: var(--fg-header-desc);
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   BARRA DE NAVEGAÇÃO PRINCIPAL (HORIZONTAL)
+   ============================================================ */
+#menu-principal {
+    background: var(--bg-nav-horiz);
+    border-top: 1px solid var(--bg-border);
+    border-bottom: 1px solid var(--bg-border);
+}
+
+#menu-principal ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.9rem 0;
+    flex-wrap: wrap;
+}
+
+#menu-principal li {
+    display: inline-block;
+}
+
+#menu-principal a {
+    color: var(--fg-nav-horiz);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.97rem;
+    transition: 0.25s ease;
+}
+
+#menu-principal a:hover,
+#menu-principal li.selected a {
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent);
+}
+
+/* ============================================================
+   MENU LATERAL / VERTICAL (SIDEBAR)
+   ============================================================ */
+#menu-lateral {
+    background: var(--bg-nav-lat);
+    border: 1px solid var(--bg-border);
+    padding: 1.8rem;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+#menu-lateral .secao-titulo {
+    font-family: 'Merriweather', serif;
+    font-size: 1.25rem;
+    color: var(--fg-content-title);
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--bg-border);
+    padding-bottom: 0.8rem;
+}
+
+.menu-lista-vertical {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.menu-lista-vertical a {
+    display: block;
+    color: var(--fg-nav-lat);
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    border-left: 3px solid transparent;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.menu-lista-vertical a:hover,
+.menu-lista-vertical li.selected a {
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    background: var(--bg-nav-hover);
+}
+
+/* ============================================================
+   CONTEÚDO PRINCIPAL (POSTAGENS)
+   ============================================================ */
+.card, .post-outer-container, .blog-post {
+    background: var(--bg-content);
+    border: 1px solid var(--bg-border);
+    padding: 2rem 2.3rem;
+    border-radius: 4px;
+    margin-bottom: 3.5rem;
+    display: block;
+}
+
+.secao-titulo, h3.post-title, h3.post-title a {
+    font-family: 'Merriweather', serif;
+    font-size: 1.45rem;
+    color: var(--fg-content-title);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    text-decoration: none;
+    display: block;
+}
+
+h3.post-title a:hover {
+    color: var(--accent);
+}
+
+p, .post-body {
+    margin-bottom: 1.3rem;
+    text-align: justify;
+    color: var(--fg-content-body);
+}
+
+.post-body img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--bg-border);
+    margin: 15px 0;
+}
+
+/* ============================================================
+   META DADOS E RODAPÉ DO POST
+   ============================================================ */
+.post-bottom {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--bg-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.post-footer {
+    font-size: 0.85rem;
+    color: var(--fg-content-muted);
+}
+
+.flat-button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.flat-button:hover {
+    background: var(--accent);
+    color: var(--accent-contrast);
+}
+
+/* ============================================================
+   NOTÍCIAS / AVISOS
+   ============================================================ */
+.notice {
+    background: var(--bg-notice);
+    border-left: 4px solid var(--accent);
+    border: 1px solid var(--bg-border);
+    padding: 1.2rem;
+    border-radius: 3px;
+    margin-bottom: 1.2rem;
+}
+
+.notice strong {
+    color: var(--accent);
+    font-family: 'Merriweather', serif;
+    font-size: 0.96rem;
+}
+
+/* ============================================================
+   PAGINAÇÃO
+   ============================================================ */
+.blog-pager {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.blog-pager a {
+    color: var(--accent);
+    border: 1px solid var(--bg-border);
+    padding: 10px 20px;
+    margin: 0 5px;
+    background: var(--bg-content);
+    display: inline-block;
+}
+
+.blog-pager a:hover {
+    background: var(--bg-border);
+}
+
+/* ============================================================
+   RODAPÉ
+   ============================================================ */
+#rodape-institucional {
+    text-align: center;
+    padding: 2.3rem 1rem;
+    font-size: 0.85rem;
+    color: var(--fg-content-muted);
+    border-top: 1px solid var(--bg-border);
+    background: var(--bg-header);
+    margin-top: 2rem;
+}
+
+.footer-widget-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.secao-link-central {
+    text-align: center;
+    margin: 2rem 0 3.5rem;
+    font-size: 0.95rem;
+}
+
+.secao-link-central a {
+    color: var(--accent);
+    border-bottom: 1px dotted var(--accent);
+}
+
+
+/* ============================================================
+   EDITOR WIDGET
+   ============================================================ */
+
+        .toolbar {
+            background-color: var(--bg-secondary);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            padding-right: 8px;
+            border-right: 1px solid var(--border);
+        }
+
+        .toolbar button, .toolbar select {
+            background-color: var(--bg-tertiary);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toolbar button:hover {
+            background-color: #444;
+            border-color: #555;
+        }
+
+        .toolbar select {
+            appearance: none;
+            padding-right: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 8px) center;
+        }
+
+        /* AI Button */
+        .ai-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+            border: none !important;
+            font-weight: bold;
+        }
+
+        .ai-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Special Buttons */
+        .privacy-btn {
+            background-color: transparent !important;
+            border: 1px solid var(--accent) !important;
+            color: var(--accent) !important;
+            margin-left: auto;
+        }
+        
+        .privacy-btn:hover {
+            background-color: rgba(204, 172, 0, 0.1) !important;
+        }
+
+        .settings-btn {
+            background: none !important;
+            border: none !important;
+            font-size: 18px !important;
+            padding: 0 5px !important;
+        }
+
+        /* Editor Area */
+        .main-container {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Fix: Ensures paper grows correctly from the top */
+            padding: 40px 20px;
+            background-color: var(--bg-primary);
+        }
+
+        .editor-paper {
+            width: 100%;
+            max-width: 850px;
+            background-color: var(--bg-secondary);
+            min-height: calc(100vh - 200px); /* Dynamic minimum height */
+            padding: 60px 80px;
+            box-shadow: var(--shadow);
+            border-radius: 4px;
+            outline: none;
+            font-size: 18px;
+            line-height: 1.7;
+            color: var(--text-main);
+            box-sizing: border-box; /* Fix: Padding won't break width */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        /* Footer / Status Bar */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 6px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            padding: 24px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 { margin-top: 0; font-size: 20px; color: var(--accent); }
+        .modal p { font-size: 14px; color: #ddd; line-height: 1.5; margin-bottom: 15px; }
+        .lang-tag { 
+            font-weight: bold; 
+            color: var(--accent); 
+            display: block; 
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+        .modal-body { margin: 20px 0; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top: 2px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin-right: 10px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .editor-paper { padding: 40px 30px; }
+            .toolbar-group:last-of-type { border-right: none; }
+            .privacy-btn { margin-left: 0; order: 10; width: 100%; }
+        }
+
+
+
+/* ============================================================
+   FIXES PARA BLOGGER WIDGETS
+   ============================================================ */
+.widget-title { display: none; }
+.item-control { display: none; }
