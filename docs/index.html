@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | Portal</title>
+    <style>
+        :root {
+            /* Layout */
+            --sidebar-width: 280px;
+            --spacing: 2.5rem;
+
+            /* Paleta Dark & Purple */
+            --bg-sidebar: #0f1115;
+            --bg-main: #161b22;
+            --bg-card: #1f2630;
+            
+            --text-main: #e2d9f3;
+            --text-sidebar: #a29bfe;
+            --text-muted: #b8b2d1;
+
+            --active-item: #ff00aa;
+            --border-color: #2d3436;
+            
+            --code-bg: #0d0f12;
+            
+            /* Tons de Acento */
+            --accent-purple: #be2edd;
+            --accent-neon: #df55f2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Navegação Vertical */
+        aside {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            color: var(--text-sidebar);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.4);
+            border-right: 1px solid var(--border-color);
+            z-index: 10;
+        }
+
+        .brand {
+            padding: var(--spacing);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-neon);
+            border-bottom: 1px solid var(--border-color);
+            text-shadow: 0 0 5px rgba(223, 85, 242, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 1rem 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 1rem var(--spacing);
+            color: var(--text-sidebar);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 0, 170, 0.05);
+            color: #fff;
+        }
+
+        nav a.active {
+            background-color: rgba(255, 0, 170, 0.1);
+            color: #fff;
+            border-left-color: var(--active-item);
+            box-shadow: inset 5px 0 10px -5px rgba(255, 0, 170, 0.3);
+        }
+
+        /* Conteúdo Principal */
+        main {
+            flex: 1;
+            padding: var(--spacing);
+            max-width: 1000px; 
+            margin: 0 auto;
+        }
+
+        section {
+            background: var(--bg-card);
+            padding: var(--spacing);
+            margin-bottom: var(--spacing);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            scroll-margin-top: 2rem; 
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 2.5rem;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.2rem;
+            color: var(--accent-neon);
+            border-bottom: 2px solid var(--active-item);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            text-align: justify;
+            color: var(--text-main);
+        }
+        
+        strong {
+            color: #fff;
+        }
+
+        ul.content-list {
+            margin-left: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-main);
+        }
+
+        ul.content-list li {
+            margin-bottom: 0.6rem;
+        }
+
+        .alert-box {
+            background-color: rgba(255, 0, 170, 0.1);
+            border: 1px solid var(--active-item);
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+
+        /* Estilização de Código */
+        pre {
+            background-color: var(--code-bg);
+            color: #f1f2f6;
+            padding: 1.5rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--active-item);
+        }
+
+        .keyword { color: #ff00aa; font-weight: bold; }
+        .class { color: #a29bfe; }
+        .string { color: #55efc4; }
+        .comment { color: #636e72; font-style: italic; }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            aside {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            nav ul { display: flex; overflow-x: auto; padding: 0; }
+            nav a { white-space: nowrap; padding: 1rem; border-left: none; border-bottom: 4px solid transparent; }
+            nav a.active { border-bottom-color: var(--active-item); }
+            main { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand">Portal Privado</div>
+        <nav>
+            <ul>
+                <li><a href="#introducao" class="active">Introdução</a></li>
+                <li><a href="#coleta">Coleta de Dados</a></li>
+                <li><a href="#distincao">Real vs. Virtual</a></li>
+                <li><a href="#cookies">Cookies e Sessão</a></li>
+                <li><a href="#seguranca">Criptografia</a></li>
+                <li><a href="#api">Segurança de API</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <h1>Política de Privacidade</h1>
+
+        <section id="introducao">
+            <h2>1. Introdução</h2>
+            <p>Esta Política descreve como tratamos informações no portal. Nosso compromisso é com a transparência técnica e a segurança, operando sob uma arquitetura de dados que prioriza a privacidade por padrão (Privacy by Design).</p>
+        </section>
+
+        <section id="coleta">
+            <h2>2. Coleta de Dados</h2>
+            <p>Nossa coleta de dados é estritamente funcional e limitada ao necessário para a operação:</p>
+            <ul class="content-list">
+                <li><strong>Comunicação:</strong> Não coletamos endereços de e-mail. Toda a comunicação e suporte são realizados exclusivamente através de meios internos de mensagem do portal.</li>
+                <li><strong>Dados Fiscais e Pagamento:</strong> Dados como CPF, CNPJ e informações de meios de pagamento são coletados apenas para viabilizar transações financeiras e a emissão de notas fiscais, quando necessário.</li>
+                <li><strong>Logs Técnicos:</strong> Endereços IP e metadados de conexão são registrados para segurança e auditoria interna.</li>
+            </ul>
+        </section>
+
+        <section id="distincao">
+            <h2>3. Distinção entre Dados Reais e Virtuais</h2>
+            <div class="alert-box">
+                <p><strong>Atenção:</strong> Há uma separação técnica e jurídica entre dados externos (vida real) e dados internos da conta dentro da simulação criada pelo portal.</p>
+            </div>
+            <p>Neste "Mundo Virtual", os dados referentes a personagens, atributos de jogo, conquistas e interações simuladas <strong>não estão sujeitos à LGPD</strong>, pois não constituem dados pessoais identificáveis fora do contexto da simulação.</p>
+            <p>Aconselhamos fortemente que os usuários <strong>não utilizem dados reais</strong> para compor nomes de caracteres ou interações dentro do mundo virtual.</p>
+        </section>
+
+        <section id="cookies">
+            <h2>4. Cookies e Tecnologias</h2>
+            <p>O portal utiliza apenas <strong>cookies de sessão</strong>. Diferente de outras plataformas, armazenamos dados analíticos e essenciais diretamente em bancos de dados no servidor, minimizando o rastreamento no lado do cliente (Client-side).</p>
+            <p>Reiteramos: dados gerados no âmbito do mundo virtual não são sujeitos à LGPD, sendo tratados como metadados da simulação.</p>
+        </section>
+
+        <section id="seguranca">
+            <h2>5. Armazenamento e Criptografia</h2>
+            <p>Todos os dados sensíveis necessários são armazenados exclusivamente sob formas computacionalmente seguras:</p>
+            <ul class="content-list">
+                <li>Utilizamos <strong>HASH</strong>, <strong>HMAC HASH</strong> e chaves de criptografia avançadas.</li>
+                <li>Os dados são inacessíveis até mesmo para a equipe de desenvolvimento.</li>
+            </ul>
+            <p>Como não armazenamos dados em formato literal, <strong>não possuímos meios técnicos para recuperar senhas ou chaves perdidas</strong>. A perda dessas credenciais implica na perda irremediável do acesso aos dados protegidos.</p>
+        </section>
+
+        <section id="api">
+            <h2>6. Segurança de API</h2>
+            <p>A segurança das nossas APIs é gerenciada pelo servidor utilizando chaves independentes, segregadas da conta de usuário do desenvolvedor.</p>
+            <pre>
+<span class="comment">// Os dados trafegam e são validados via HMAC</span>
+<span class="keyword">const</span> <span class="class">securityHeader</span> = {
+    <span class="string">'X-HMAC-Signature'</span>: <span class="string">'&lt;HASH_DE_INTEGRIDADE&gt;'</span>,
+    <span class="string">'X-Server-Key'</span>: <span class="string">'&lt;INTERNAL_SERVER_ONLY&gt;'</span>
+};</pre>
+            <p>Novamente, todo dado coletado via API que necessite de persistência é armazenado em formato de HASH ou criptografia, mantendo a política de não-recuperação de dados literais e proteção total contra vazamentos de dados legíveis.</p>
+        </section>
+
+    </main>
+
+    <script>
+        // Lógica de navegação e scroll spy
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+
+        function handleScroll() {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        navLinks.forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 30,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        window.onscroll = handleScroll;
+    </script>
+
+</body>
+</html>
