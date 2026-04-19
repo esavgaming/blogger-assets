@@ -47,41 +47,45 @@ async function init() {
     
     listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
 
-        console.log(`${getBookPath()}/index.json`);
-
     try {
-        // Fetch the static index.json from the CDN
-        const response = await fetch(`${getBookPath()}/index.json`, {
-            method: 'GET', // Static files always use GET
-            cache: 'no-cache' // Optional: ensures you get the latest version from GitHub
-        });
+        const url = `${getBookPath()}/index.json`;
+        console.log("Fetching from:", url);
 
-        if (!response.ok) throw new Error(`Erro ao acessar índice: ${response.status}`);
+        const response = await fetch(url);
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        // Get as text first to avoid JSON parse errors on empty/malformed files
+        const rawText = await response.text();
+        if (!rawText || rawText.trim() === "") throw new Error("Arquivo vazio");
+
+        const data = JSON.parse(rawText);
         
-        const data = await response.json();
-        
-        if (data.index && Array.isArray(data.index)) {
-            bookStructure = data.index;
-            // Hide indicator since we are successfully pulling real data
+        // Handle both { index: [] } and just a raw []
+        const extractedIndex = Array.isArray(data) ? data : data.index;
+
+        if (extractedIndex && Array.isArray(extractedIndex)) {
+            bookStructure = extractedIndex;
+            isTestMode = false; // We found real data
             if (indicator) indicator.style.display = 'none';
         } else {
-            throw new Error("Formato de índice inválido.");
+            throw new Error("Estrutura do JSON não reconhecida");
         }
 
     } catch (error) {
-        console.error("CDN Load Fail:", error);
+        console.error("Falha no carregamento estático:", error.message);
         
-        // Fallback to local test data if the CDN fetch fails
+        // Forced Fallback
         bookStructure = FALLBACK_INDEX;
+        isTestMode = true; 
         if (indicator) indicator.style.display = 'inline-block';
         
-        if (bookStructure.length === 0) {
-            listElement.innerHTML = '<li class="status-msg" style="color:var(--accent-red)">Erro crítico ao carregar dados.</li>';
+        if (!bookStructure || bookStructure.length === 0) {
+            listElement.innerHTML = '<li class="status-msg" style="color:var(--accent-red)">Erro crítico: Sem dados.</li>';
             return;
         }
     }
     
-    // Refresh UI with the new structure
     renderSidebar();
     loadChapterByIndex(0);
 }
