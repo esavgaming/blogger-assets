@@ -1,0 +1,193 @@
+ /* * RAW CSS - TEMA DARK MATTE (AZUL/VERDE) */
+        :root {
+            --bg-body: #0f1216;
+            --bg-sidebar: #090b0e;
+            --bg-card: #161b22;
+            --bg-modal: rgba(0, 0, 0, 0.85); /* Fundo escuro do modal */
+            
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            
+            --accent-green: #3fb950;
+            --accent-green-dim: #238636; 
+            --accent-blue: #58a6ff;
+            --accent-blue-dim: #1f6feb;
+            --accent-red: #f85149;
+            --accent-warning: #d29922;
+
+            --border-color: #30363d;
+            --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            --font-read: "Georgia", "Cambria", "Times New Roman", serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        aside {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-header h1 { font-size: 1.2rem; color: var(--accent-blue); font-weight: 600; letter-spacing: 0.5px; }
+        .sidebar-header p { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
+        
+        .test-mode-badge {
+            font-size: 0.7rem; color: var(--accent-warning); border: 1px solid var(--accent-warning);
+            padding: 2px 6px; border-radius: 4px; margin-top: 0.5rem; display: inline-block; text-transform: uppercase;
+        }
+
+        #chapter-list { list-style: none; overflow-y: auto; flex-grow: 1; padding: 1rem 0; }
+
+        .chapter-item {
+            padding: 0.8rem 1.5rem; cursor: pointer; border-left: 3px solid transparent;
+            transition: all 0.2s ease; font-size: 0.95rem; color: var(--text-muted);
+        }
+        .chapter-item:hover { background-color: rgba(56, 139, 253, 0.1); color: var(--text-main); }
+        .chapter-item.active {
+            border-left-color: var(--accent-green); background-color: rgba(46, 160, 67, 0.1);
+            color: var(--text-main); font-weight: 500;
+        }
+
+        .status-msg { padding: 1rem 1.5rem; font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+        .error-msg { color: var(--accent-red); padding: 1rem 1.5rem; font-size: 0.85rem; }
+
+        /* MAIN CONTENT */
+        main { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
+
+        .toolbar {
+            height: 60px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; background-color: rgba(15, 18, 22, 0.95);
+            border-bottom: 1px solid var(--border-color); backdrop-filter: blur(5px); z-index: 10;
+        }
+
+        .current-chapter-title { font-size: 0.9rem; color: var(--accent-green); text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+
+        #reader-container { flex-grow: 1; overflow-y: auto; padding: 2rem; scroll-behavior: smooth; }
+
+        .prose {
+            max-width: 750px; margin: 0 auto; font-family: var(--font-read); font-size: 1.15rem;
+            line-height: 1.8; color: var(--text-main); padding-bottom: 100px; white-space: pre-line; 
+        }
+
+        .prose h2 { font-family: var(--font-ui); color: var(--accent-blue); margin-bottom: 1.5rem; font-size: 2rem; line-height: 1.2; margin-top: 1rem; }
+        .prose h3 {
+            font-family: var(--font-ui); color: var(--accent-green); font-size: 1.4rem; font-weight: normal;
+            margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(48, 54, 61, 0.5); padding-bottom: 0.5rem;
+        }
+        .prose p { margin-bottom: 1.5rem; }
+        .prose code { background-color: #252a31; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; color: var(--accent-green); }
+
+        /* MACRO LINKS */
+        .macro-link {
+            color: var(--accent-blue); border-bottom: 1px dashed var(--accent-blue-dim);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .macro-link:hover { color: var(--accent-green); border-bottom-color: var(--accent-green); background-color: rgba(88, 166, 255, 0.1); }
+        
+        .content-loader {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 300px; color: var(--text-muted); font-style: italic;
+        }
+
+        .nav-controls {
+            display: flex; justify-content: space-between; margin-top: 4rem;
+            padding-top: 2rem; border-top: 1px solid var(--border-color);
+        }
+
+        button {
+            background-color: transparent; border: 1px solid var(--border-color); color: var(--text-main);
+            padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; font-family: var(--font-ui); font-size: 0.9rem;
+            transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+        }
+        button:hover:not(:disabled) { border-color: var(--accent-green); color: var(--accent-green); background-color: rgba(63, 185, 80, 0.05); }
+        button:disabled { opacity: 0.3; cursor: not-allowed; border-color: transparent; }
+        
+        /* --- DYNAMIC MODAL SYSTEM --- */
+        
+        /* Wrapper para o modal (Fundo Escuro) */
+        .modal-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-modal); 
+            /* Z-index será definido dinamicamente via JS para empilhamento */
+            backdrop-filter: blur(2px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-wrapper.visible { opacity: 1; }
+
+        /* Container do Conteúdo Padrão (Texto) */
+        .modal-content {
+            background-color: var(--bg-card); width: 90%; max-width: 800px; max-height: 85vh;
+            border: 1px solid var(--border-color); border-radius: 8px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; 
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-wrapper.visible .modal-content { transform: scale(1); }
+
+        /* MODO IMAGEM: Box, mas ajustado para conteúdo visual */
+        .modal-content.image-mode {
+            width: auto; /* Deixa a largura se ajustar à imagem */
+            max-width: 90vw; /* Limite de tela */
+            background-color: var(--bg-card); /* Mantém o fundo do box */
+        }
+        
+        .modal-content.image-mode .modal-body { 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            background-color: #000; /* Fundo preto atrás da imagem para contraste */
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .modal-content.image-mode img {
+            display: block; 
+            max-width: 100%; 
+            max-height: 75vh; /* Altura máxima para não estourar a tela */
+            object-fit: contain; 
+        }
+
+        /* Elementos Internos do Modal */
+        .modal-header {
+            padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0; /* Header não encolhe */
+        }
+        .modal-title {
+            color: var(--accent-green); font-weight: bold; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .close-btn {
+            background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1;
+        }
+        .close-btn:hover { color: var(--accent-red); }
+        .modal-body { padding: 2rem; overflow-y: auto; flex-grow: 1; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            aside { width: 100%; height: auto; max-height: 200px; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .sidebar-header { padding: 1rem; }
+            #reader-container { padding: 1.5rem; }
+            .modal-content { width: 95%; height: 90vh; }
+            .modal-content.image-mode { max-width: 95vw; }
+        }
