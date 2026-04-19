@@ -34,7 +34,7 @@
         let currentIndex = 0;
         let isTestMode = false;
 
-// --- CONFIG UPDATE --- Lastest
+// --- CONFIG UPDATE --- Lastest New
 const BASE_CDN = 'https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader';
 let currentBookId = 'ealetra'; 
 
@@ -46,7 +46,6 @@ async function init() {
     const indicator = document.getElementById('test-mode-indicator');
     
     listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
-
         console.log(`${getBookPath()}/index.json`);
 
     try {
