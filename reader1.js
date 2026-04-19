@@ -47,6 +47,8 @@ async function init() {
     
     listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
 
+        console.log(`${getBookPath()}/index.json`);
+
     try {
         // Fetch the static index.json from the CDN
         const response = await fetch(`${getBookPath()}/index.json`, {
