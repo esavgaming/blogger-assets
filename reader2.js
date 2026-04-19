@@ -49,36 +49,29 @@ async function init() {
         const url = `${getBookPath()}/index.json`;
         const response = await fetch(url);
 
-        if (!response.ok) throw new Error(`Não encontrado: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
+        // The file IS the array. We parse it and use it directly.
         const data = await response.json();
 
-        /**
-         * LOGIC CHECK: 
-         * 1. If 'data' is the array itself (like your FALLBACK_INDEX), use it.
-         * 2. If 'data' is an object containing 'index', use data.index.
-         */
-        bookStructure = Array.isArray(data) ? data : (data.index || []);
-
-        if (bookStructure.length === 0) {
-            throw new Error("O índice está vazio ou em formato incompatível.");
-        }
-
-        isTestMode = false;
-        if (document.getElementById('test-mode-indicator')) {
-            document.getElementById('test-mode-indicator').style.display = 'none';
+        if (Array.isArray(data)) {
+            bookStructure = data;
+            isTestMode = false;
+            const indicator = document.getElementById('test-mode-indicator');
+            if (indicator) indicator.style.display = 'none';
+        } else {
+            throw new Error("Formato inválido: Esperado um Array [].");
         }
 
     } catch (error) {
-        console.error("Erro ao carregar do CDN:", error.message);
+        console.warn("CDN Fail. Reverting to Fallback.", error.message);
         
-        // Use the hardcoded fallback you provided in the source
+        // Revert to your FALLBACK_INDEX variable
         bookStructure = FALLBACK_INDEX;
         isTestMode = true;
         
-        if (document.getElementById('test-mode-indicator')) {
-            document.getElementById('test-mode-indicator').style.display = 'inline-block';
-        }
+        const indicator = document.getElementById('test-mode-indicator');
+        if (indicator) indicator.style.display = 'inline-block';
     }
     
     renderSidebar();
