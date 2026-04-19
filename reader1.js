@@ -1,15 +1,11 @@
         // --- CONFIG ---
-        const API_URL_INDEX = '/api/webio/book/index';
-        const API_URL_CONTENT = '/api/webio/book/content';
-        const API_URL_IMAGE_BASE = '/api/content/distribution/get?image=';
-        
-        let currentBookId = 'ealetra'; 
-        
-        const API_HEADERS = {
-            'Content-Type': 'application/json',
-            'ESAV-Auth': '8b1d636544064f7b8bb66478002c9cb6b08970dab41e3ec7012dd4ea69dfa8d727e06423b7706dfc4751550f5643355f13806fc5ca2b9384d2141b712ea0896f',
-            'ESAV-Token': 'e7d06394f4017fb0dd9467dca1e6379490d9ada40d7ec3b82f007f381c9a87aa83611a3034a51dd69cb0bba1ad2d5c35e589189477beeae25b9c391ff2530915'
-        };
+        // --- CONFIG ---
+// Base: https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader/[book]/
+const BASE_CDN = 'https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader';
+let currentBookId = 'ealetra'; 
+
+// Derivando os caminhos
+const getBookPath = () => `${BASE_CDN}/${currentBookId}`;
 
         // --- FALLBACK DATA ---
         const FALLBACK_INDEX = [
@@ -47,44 +43,55 @@
         let currentIndex = 0;
         let isTestMode = false;
 
-        async function init() {
-            const listElement = document.getElementById('chapter-list');
-            listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
+// --- CONFIG UPDATE ---
+const BASE_CDN = 'https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader';
+let currentBookId = 'ealetra'; 
 
-            try {
-                const response = await fetch(API_URL_INDEX, {
-                    method: 'POST',
-                    headers: API_HEADERS,
-                    body: JSON.stringify({ book: currentBookId })
-                });
+// Helper to get the current book's root directory
+const getBookPath = () => `${BASE_CDN}/${currentBookId}`;
 
-                if (!response.ok) throw new Error(`Status ${response.status}`);
-                const data = await response.json();
-                
-                if (data.index && Array.isArray(data.index)) {
-                    bookStructure = data.index;
-                    isTestMode = false;
-                    document.getElementById('test-mode-indicator').style.display = 'none';
-                } else {
-                     throw new Error("Índice inválido.");
-                }
+async function init() {
+    const listElement = document.getElementById('chapter-list');
+    const indicator = document.getElementById('test-mode-indicator');
+    
+    listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
 
-            } catch (error) {
-                console.warn("API Fail. Test Mode.", error);
-                bookStructure = FALLBACK_INDEX;
-                isTestMode = true;
-                document.getElementById('test-mode-indicator').style.display = 'inline-block';
-                listElement.innerHTML = ''; 
-            }
-            
-            if (bookStructure.length === 0) {
-                 listElement.innerHTML = '<li class="status-msg">Vazio.</li>';
-                 return;
-            }
-            
-            renderSidebar();
-            loadChapterByIndex(0);
+    try {
+        // Fetch the static index.json from the CDN
+        const response = await fetch(`${getBookPath()}/index.json`, {
+            method: 'GET', // Static files always use GET
+            cache: 'no-cache' // Optional: ensures you get the latest version from GitHub
+        });
+
+        if (!response.ok) throw new Error(`Erro ao acessar índice: ${response.status}`);
+        
+        const data = await response.json();
+        
+        if (data.index && Array.isArray(data.index)) {
+            bookStructure = data.index;
+            // Hide indicator since we are successfully pulling real data
+            if (indicator) indicator.style.display = 'none';
+        } else {
+            throw new Error("Formato de índice inválido.");
         }
+
+    } catch (error) {
+        console.error("CDN Load Fail:", error);
+        
+        // Fallback to local test data if the CDN fetch fails
+        bookStructure = FALLBACK_INDEX;
+        if (indicator) indicator.style.display = 'inline-block';
+        
+        if (bookStructure.length === 0) {
+            listElement.innerHTML = '<li class="status-msg" style="color:var(--accent-red)">Erro crítico ao carregar dados.</li>';
+            return;
+        }
+    }
+    
+    // Refresh UI with the new structure
+    renderSidebar();
+    loadChapterByIndex(0);
+}
 
         async function switchBook(newBookId) {
             currentBookId = newBookId;
@@ -138,25 +145,36 @@
             return processedText;
         }
 
-        async function fetchContent(fileId) {
-            if (isTestMode) {
-                await new Promise(r => setTimeout(r, 200));
-                if (FALLBACK_CONTENT[fileId]) return FALLBACK_CONTENT[fileId];
-                throw new Error(`[Teste] 404: ${fileId}`);
-            }
+async function fetchContent(fileId) {
+    // We check if we are in "Test Mode" (fallback) first.
+    // This allows you to keep testing locally without being online.
+    if (isTestMode) {
+        await new Promise(r => setTimeout(r, 200)); // Simulate network lag
+        if (FALLBACK_CONTENT[fileId]) return FALLBACK_CONTENT[fileId];
+        throw new Error(`[Offline] 404: ${fileId}`);
+    }
 
-            const response = await fetch(API_URL_CONTENT, {
-                method: 'POST',
-                headers: API_HEADERS,
-                body: JSON.stringify({ 
-                    book: currentBookId,
-                    fileId: fileId 
-                })
-            });
+    // Direct path: BASE_CDN/[book]/content/[fileId].txt
+    const url = `${getBookPath()}/content/${fileId}.txt`;
 
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return await response.text();
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            cache: 'default'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Arquivo não encontrado no CDN: ${fileId} (Status ${response.status})`);
         }
+
+        // Return the raw text directly
+        return await response.text();
+        
+    } catch (error) {
+        console.error("Content Fetch Error:", error);
+        throw error; // Let loadChapterByIndex handle the UI error display
+    }
+}
 
         async function loadChapterByIndex(index) {
             if (index < 0 || index >= bookStructure.length) return;
@@ -267,11 +285,16 @@
             spawnModal(htmlContent, 'text', linkText);
         }
 
-        function openImage(filename, title) {
-            const url = `${API_URL_IMAGE_BASE}${currentBookId}:content:${filename}`;
-            const imgHtml = `<img src="${url}" onerror="this.parentNode.innerHTML='<p style=\\'color:#fff;text-align:center\\'>Erro imagem.</p>'">`;
-            const displayTitle = title || filename;
-            spawnModal(imgHtml, 'image', displayTitle);
-        }
+function openImage(imageUrl, title) {
+    // imageUrl is now expected to be a full link (e.g., https://imgur.com/xyz.png)
+    const imgHtml = `
+        <img src="${imageUrl}" 
+             alt="${title}" 
+             onerror="this.parentElement.innerHTML='<p style=\\'color:#fff;text-align:center\\'>Erro ao carregar imagem: link inválido.</p>'">
+    `;
+    
+    const displayTitle = title || "Visualização";
+    spawnModal(imgHtml, 'image', displayTitle);
+}
 
         init();
