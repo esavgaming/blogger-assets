@@ -43,46 +43,41 @@ const getBookPath = () => `${BASE_CDN}/${currentBookId}`;
 
 async function init() {
     const listElement = document.getElementById('chapter-list');
-    const indicator = document.getElementById('test-mode-indicator');
-    
     listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
 
     try {
         const url = `${getBookPath()}/index.json`;
-        console.log("Fetching from:", url);
-
         const response = await fetch(url);
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) throw new Error(`Não encontrado: ${response.status}`);
 
-        // Get as text first to avoid JSON parse errors on empty/malformed files
-        const rawText = await response.text();
-        if (!rawText || rawText.trim() === "") throw new Error("Arquivo vazio");
+        const data = await response.json();
 
-        const data = JSON.parse(rawText);
-        
-        // Handle both { index: [] } and just a raw []
-        const extractedIndex = Array.isArray(data) ? data : data.index;
+        /**
+         * LOGIC CHECK: 
+         * 1. If 'data' is the array itself (like your FALLBACK_INDEX), use it.
+         * 2. If 'data' is an object containing 'index', use data.index.
+         */
+        bookStructure = Array.isArray(data) ? data : (data.index || []);
 
-        if (extractedIndex && Array.isArray(extractedIndex)) {
-            bookStructure = extractedIndex;
-            isTestMode = false; // We found real data
-            if (indicator) indicator.style.display = 'none';
-        } else {
-            throw new Error("Estrutura do JSON não reconhecida");
+        if (bookStructure.length === 0) {
+            throw new Error("O índice está vazio ou em formato incompatível.");
+        }
+
+        isTestMode = false;
+        if (document.getElementById('test-mode-indicator')) {
+            document.getElementById('test-mode-indicator').style.display = 'none';
         }
 
     } catch (error) {
-        console.error("Falha no carregamento estático:", error.message);
+        console.error("Erro ao carregar do CDN:", error.message);
         
-        // Forced Fallback
+        // Use the hardcoded fallback you provided in the source
         bookStructure = FALLBACK_INDEX;
-        isTestMode = true; 
-        if (indicator) indicator.style.display = 'inline-block';
+        isTestMode = true;
         
-        if (!bookStructure || bookStructure.length === 0) {
-            listElement.innerHTML = '<li class="status-msg" style="color:var(--accent-red)">Erro crítico: Sem dados.</li>';
-            return;
+        if (document.getElementById('test-mode-indicator')) {
+            document.getElementById('test-mode-indicator').style.display = 'inline-block';
         }
     }
     
