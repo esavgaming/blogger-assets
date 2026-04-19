@@ -34,7 +34,7 @@
         let currentIndex = 0;
         let isTestMode = false;
 
-// --- CONFIG UPDATE ---
+// --- CONFIG UPDATE --- Lastest
 const BASE_CDN = 'https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader';
 let currentBookId = 'ealetra'; 
 
