@@ -1,12 +1,3 @@
-        // --- CONFIG ---
-        // --- CONFIG ---
-// Base: https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader/[book]/
-const BASE_CDN = 'https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader';
-let currentBookId = 'ealetra'; 
-
-// Derivando os caminhos
-const getBookPath = () => `${BASE_CDN}/${currentBookId}`;
-
         // --- FALLBACK DATA ---
         const FALLBACK_INDEX = [
             { id: 900, title: "Teste: Formatação", fileId: "test_fmt" },
