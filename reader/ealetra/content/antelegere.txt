@@ -1,0 +1,34 @@
+*Prefácio*
+***Uma obra feita para um público específico, pequeno, que nem mesmo sei se existe.***
+
+Crônicas de Ealetra é um livro que escrevo mais como um sistema de RPG, um documentário, e depois uma narrativa. Ele é organizado sobre uma história em que os detalhes são adicionados em materiais específicos, como uma pesquisa no mundo de Ealetra.
+Essa não é uma obra feita para ser um best seller, mas uma obra que eu gostei de escrever como uma pesquisa científica onde podemos experimentar com o mundo, e uma forma de fugir para um mundo que faz sentido, longe das convenções que turvam a pesquisa e a ciência do mundo real.
+Ela serve para um leitor entender o mundo e participar, até mesmo criar, suas próprias partes da narrativa, entendendo o mundo, e participando dele como desejar. 
+Ela pode ser visto por uma IA, e esta permitir que o leitor interaja, criando novos conteúdos, e explorando o mundo mesmo onde a narrativa não vai.
+
+*Imersão e Construção do Mundo*
+Neste volume, a história é o foco, e o conhecimento necessário mínimo é exposto, mas os detalhes estão em obras separadas como os livros de um RPG. Se o leitor quiser entender completamente algum aspecto específico do mundo de Ealetra, os outros documentos tratam de aspectos mais detalhados das culturas, da ciência e das sociedades. Experimente {antebox:neste link} como isso é feito.
+O diálogo é inserido no text ao invés de separado por travessão, para uma leitura direta. Uma escolha deliberada. Todo o texto é suposto escrito em idiomas falados pelos personagens, e apesar de ter os idiomas completamente definidos, o livro apresentará poucos diálogos em idiomas diferentes da narrativa.
+Imagens estarão inseridas para abertura como neste link: [haratasimbolo:Bandeira Harata]
+
+*Dinâmica de leitura*
+Em cada texto, pode-se avançar pelos links abaixo, ou pelo índice. Nos pontos de "intercâmbio" haverá links para outros livros, como |codexealetra:este aqui|.
+
+*Inspiração e Motivação*
+Essa viagem não é uma de literatura meramente feita para encantar a imaginação, é uma obra que faço para saciar uma alma de pesquisador presa a um corpo cansado dos entraves políticos.
+
+*Estevan Valladares - Montevidéu - 2024*
+
+*Dedicatória*
+Para todos que contribuiram em levar esse trabalho pra frente, mas acima de tudo, para ela, que viu a escuridão dentro de mim, e aceitou-a, alimentou-a, e amou-a.
+
+*Epígrafe*
+“A mais velha e mais forte emoção humana é o medo,
+e o mais velho e mais forte tipo de medo é o medo do desconhecido.”
+— H.P. Lovecraft
+
+* *
+
+Fases da Narrativa:
+
+Fase 1: |fase1-trifronteira:A Trifronteira|
