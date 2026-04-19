@@ -34,7 +34,7 @@
         let currentIndex = 0;
         let isTestMode = false;
 
-// --- CONFIG UPDATE --- Lastest New
+// --- CONFIG UPDATE --- Lastest
 const BASE_CDN = 'https://cdn.jsdelivr.net/gh/esavgaming/blogger-assets/reader';
 let currentBookId = 'ealetra'; 
 
@@ -43,44 +43,37 @@ const getBookPath = () => `${BASE_CDN}/${currentBookId}`;
 
 async function init() {
     const listElement = document.getElementById('chapter-list');
-    const indicator = document.getElementById('test-mode-indicator');
-    
     listElement.innerHTML = `<li class="status-msg">Carregando: ${currentBookId}...</li>`;
-        console.log(`${getBookPath()}/index.json`);
 
     try {
-        // Fetch the static index.json from the CDN
-        const response = await fetch(`${getBookPath()}/index.json`, {
-            method: 'GET', // Static files always use GET
-            cache: 'no-cache' // Optional: ensures you get the latest version from GitHub
-        });
+        const url = `${getBookPath()}/index.json`;
+        const response = await fetch(url);
 
-        if (!response.ok) throw new Error(`Erro ao acessar índice: ${response.status}`);
-        
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        // The file IS the array. We parse it and use it directly.
         const data = await response.json();
-        
-        if (data.index && Array.isArray(data.index)) {
-            bookStructure = data.index;
-            // Hide indicator since we are successfully pulling real data
+
+        if (Array.isArray(data)) {
+            bookStructure = data;
+            isTestMode = false;
+            const indicator = document.getElementById('test-mode-indicator');
             if (indicator) indicator.style.display = 'none';
         } else {
-            throw new Error("Formato de índice inválido.");
+            throw new Error("Formato inválido: Esperado um Array [].");
         }
 
     } catch (error) {
-        console.error("CDN Load Fail:", error);
+        console.warn("CDN Fail. Reverting to Fallback.", error.message);
         
-        // Fallback to local test data if the CDN fetch fails
+        // Revert to your FALLBACK_INDEX variable
         bookStructure = FALLBACK_INDEX;
-        if (indicator) indicator.style.display = 'inline-block';
+        isTestMode = true;
         
-        if (bookStructure.length === 0) {
-            listElement.innerHTML = '<li class="status-msg" style="color:var(--accent-red)">Erro crítico ao carregar dados.</li>';
-            return;
-        }
+        const indicator = document.getElementById('test-mode-indicator');
+        if (indicator) indicator.style.display = 'inline-block';
     }
     
-    // Refresh UI with the new structure
     renderSidebar();
     loadChapterByIndex(0);
 }
@@ -110,32 +103,35 @@ async function init() {
             });
         }
 
-        function formatRawText(rawText) {
-            if (!rawText) return "";
+function formatRawText(rawText) {
+    if (!rawText) return "";
 
-            let processedText = rawText.replace(/\*\*\*(.*?)\*\*\*/g, '<h2>$1</h2>');
-            processedText = processedText.replace(/\*(.*?)\*/g, '<h3>$1</h3>');
+    // 1. Headers (unchanged)
+    let processedText = rawText.replace(/\*\*\*(.*?)\*\*\*/g, '<h2>$1</h2>');
+    processedText = processedText.replace(/\*(.*?)\*/g, '<h3>$1</h3>');
 
-            processedText = processedText.replace(/\?(.*?):(.*?)\?/g, (match, id, text) => {
-                const safeId = id.replace(/'/g, "\\'");
-                const safeText = text.replace(/'/g, "\\'");
-                return `<span class="macro-link" onclick="openMacro('${safeId}', '${safeText}')">${text}</span>`;
-            });
-            
-            processedText = processedText.replace(/!(.*?):(.*?)\!/g, (match, id, text) => {
-                const safeId = id.replace(/'/g, "\\'");
-                return `<span class="macro-link" style="color:var(--accent-green)" onclick="switchBook('${safeId}')">${text}</span>`;
-            });
+    // 2. Open Macro: {id:text}
+    processedText = processedText.replace(/\{(.*?):(.*?)\}/g, (match, id, text) => {
+        const safeId = id.replace(/'/g, "\\'");
+        const safeText = text.replace(/'/g, "\\'");
+        return `<span class="macro-link" onclick="openMacro('${safeId}', '${safeText}')">${text}</span>`;
+    });
 
-            // Regex atualizada para capturar [arquivo:titulo]
-            processedText = processedText.replace(/\[(.*?):(.*?)]/g, (match, filename, text) => {
-                const safeName = filename.replace(/'/g, "\\'");
-                const safeText = text.replace(/'/g, "\\'");
-                return `<span class="macro-link" onclick="openImage('${safeName}', '${safeText}')">📷 ${text}</span>`;
-            });
+    // 3. Switch Book: |id:text|
+    processedText = processedText.replace(/\|(.*?):(.*?)\|/g, (match, id, text) => {
+        const safeId = id.replace(/'/g, "\\'");
+        return `<span class="macro-link" style="color:var(--accent-green)" onclick="switchBook('${safeId}')">${text}</span>`;
+    });
 
-            return processedText;
-        }
+    // 4. Images: [url:text]
+    processedText = processedText.replace(/\[(.*?):(.*?)]/g, (match, filename, text) => {
+        const safeName = filename.replace(/'/g, "\\'");
+        const safeText = text.replace(/'/g, "\\'");
+        return `<span class="macro-link" onclick="openImage('${safeName}', '${safeText}')">📷 ${text}</span>`;
+    });
+
+    return processedText;
+}
 
 async function fetchContent(fileId) {
     // We check if we are in "Test Mode" (fallback) first.
