@@ -1,0 +1,68 @@
+        /* --- DYNAMIC MODAL SYSTEM --- */
+
+        /* MACRO LINKS */
+        .macro-link {
+            color: var(--accent-blue); border-bottom: 1px dashed var(--accent-blue-dim);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .macro-link:hover { color: var(--accent-green); border-bottom-color: var(--accent-green); background-color: rgba(88, 166, 255, 0.1); }
+        
+        /* Wrapper para o modal (Fundo Escuro) */
+        .modal-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-modal); 
+            /* Z-index será definido dinamicamente via JS para empilhamento */
+            backdrop-filter: blur(2px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-wrapper.visible { opacity: 1; }
+
+        /* Container do Conteúdo Padrão (Texto) */
+        .modal-content {
+            background-color: var(--bg-card); width: 90%; max-width: 800px; max-height: 85vh;
+            border: 1px solid var(--border-color); border-radius: 8px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; 
+            transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal-wrapper.visible .modal-content { transform: scale(1); }
+
+        /* MODO IMAGEM: Box, mas ajustado para conteúdo visual */
+        .modal-content.image-mode {
+            width: auto; /* Deixa a largura se ajustar à imagem */
+            max-width: 90vw; /* Limite de tela */
+            background-color: var(--bg-card); /* Mantém o fundo do box */
+        }
+        
+        .modal-content.image-mode .modal-body { 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            background-color: #000; /* Fundo preto atrás da imagem para contraste */
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .modal-content.image-mode img {
+            display: block; 
+            max-width: 100%; 
+            max-height: 75vh; /* Altura máxima para não estourar a tela */
+            object-fit: contain; 
+        }
+
+        /* Elementos Internos do Modal */
+        .modal-header {
+            padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0; /* Header não encolhe */
+        }
+        .modal-title {
+            color: var(--accent-green); font-weight: bold; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .close-btn {
+            background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1;
+        }
+        .close-btn:hover { color: var(--accent-red); }
+        .modal-body { padding: 2rem; overflow-y: auto; flex-grow: 1; }
